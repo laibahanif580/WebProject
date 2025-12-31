@@ -638,3 +638,15 @@ D:\WebTechnologies\PersonalTaskManager\bin\Debug\net8.0\publish\publish\publish\
 D:\WebTechnologies\PersonalTaskManager\bin\Debug\net8.0\publish\publish\publish\publish\publish\publish\appsettings.json
 D:\WebTechnologies\PersonalTaskManager\bin\Debug\net8.0\publish\publish\publish\publish\publish\publish\PersonalTaskManager.deps.json
 D:\WebTechnologies\PersonalTaskManager\bin\Debug\net8.0\publish\publish\publish\publish\publish\publish\PersonalTaskManager.runtimeconfig.json
+D:\WebTechnologies\PersonalTaskManager\bin\Debug\net8.0\publish\publish\publish\publish\publish\publish\alpine\x64\Cov_x64.config
+D:\WebTechnologies\PersonalTaskManager\bin\Debug\net8.0\publish\publish\publish\publish\publish\publish\CodeCoverage\amd64\Cov_x64.config
+D:\WebTechnologies\PersonalTaskManager\bin\Debug\net8.0\publish\publish\publish\publish\publish\publish\CodeCoverage\arm64\Cov_arm64.config
+D:\WebTechnologies\PersonalTaskManager\bin\Debug\net8.0\publish\publish\publish\publish\publish\publish\CodeCoverage\CodeCoverage.config
+D:\WebTechnologies\PersonalTaskManager\bin\Debug\net8.0\publish\publish\publish\publish\publish\publish\CodeCoverage\Cov_x86.config
+D:\WebTechnologies\PersonalTaskManager\bin\Debug\net8.0\publish\publish\publish\publish\publish\publish\macos\x64\Cov_x64.config
+D:\WebTechnologies\PersonalTaskManager\bin\Debug\net8.0\publish\publish\publish\publish\publish\publish\publish\web.config
+D:\WebTechnologies\PersonalTaskManager\bin\Debug\net8.0\publish\publish\publish\publish\publish\publish\ubuntu\x64\Cov_x64.config
+D:\WebTechnologies\PersonalTaskManager\bin\Debug\net8.0\publish\publish\publish\publish\publish\publish\publish\appsettings.Development.json
+D:\WebTechnologies\PersonalTaskManager\bin\Debug\net8.0\publish\publish\publish\publish\publish\publish\publish\appsettings.json
+D:\WebTechnologies\PersonalTaskManager\bin\Debug\net8.0\publish\publish\publish\publish\publish\publish\publish\PersonalTaskManager.deps.json
+D:\WebTechnologies\PersonalTaskManager\bin\Debug\net8.0\publish\publish\publish\publish\publish\publish\publish\PersonalTaskManager.runtimeconfig.json

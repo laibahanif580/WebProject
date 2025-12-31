@@ -11,16 +11,43 @@
         <div class="col-md-4">
             <div class="card task-card">
                 <div class="card-body">
-                    <div>
-                        <h5 class="card-title fw-bold task-title text-white">@task.Title</h5>
-                        <p class="card-text text-white mb-2"><strong>Category:</strong> @task.Category</p>
+                    <h5 class="card-title fw-bold task-title text-white">@task.Title</h5>
+
+                    <p class="card-text text-white mb-2">
+                        <strong>Category:</strong> @task.Category
+                    </p>
+
+                    <div class="d-flex align-items-center flex-wrap gap-2 mb-2">
                         <span class="task-status @(task.Status == "Pending" ? "status-pending" : "status-completed")">
                             @task.Status
                         </span>
+
+                        @* Overdue or Due Soon badge *@
+                       @if (task.DueDate.HasValue && task.Status != "Completed")
+                        {
+        DateTime effectiveDueDate = task.DueDate.Value.Date.AddDays(1).AddSeconds(-1);
+        double hoursLeft = (effectiveDueDate - DateTime.Now).TotalHours;
+
+        if (hoursLeft < 0)
+        {
+                <span class="badge bg-danger">Overdue</span>
+        }
+        else if (hoursLeft <= 24)
+        {
+                <span class="badge bg-warning text-dark">
+                    Due Soon
+                </span>
+        }
+}
+
                     </div>
 
-                    <a asp-controller="Task" asp-action="Details" asp-route-id="@task.TaskId"
-                       class="btn-details">Details</a>
+                    <a asp-controller="Task" 
+                       asp-action="Details" 
+                       asp-route-id="@task.TaskId" 
+                       class="btn-details mt-2">
+                        Details
+                    </a>
                 </div>
             </div>
         </div>
