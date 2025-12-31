@@ -1,0 +1,12 @@
+@model IEnumerable<PersonalTaskManager.Models.Announcement>
+
+<div id="announcementList">
+    @foreach (var ann in Model)
+    {
+        <div class="alert alert-info mb-3">
+            <strong>@ann.Title</strong><br>
+            @ann.Message<br>
+            <small class="text-muted">Posted on: @ann.CreatedAt.ToLocalTime().ToString("g")</small>
+        </div>
+    }
+</div>

@@ -1,0 +1,3 @@
+[2025-11-30 19:38:56] ERROR: Error while saving task 'buy groceries'
+System.Exception: Test: Invalid ModelState
+   at PersonalTaskManager.Controllers.TaskController.Create(UserTask task)

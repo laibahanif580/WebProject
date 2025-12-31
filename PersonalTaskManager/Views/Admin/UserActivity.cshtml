@@ -1,0 +1,76 @@
+@model IEnumerable<dynamic>
+
+@{
+    ViewData["Title"] = "User Activity";
+}
+
+<h2 class="mb-3 text-center">User Activity</h2>
+<hr class="mb-4" />
+
+<div class="table-responsive">
+    <table class="table table-hover align-middle text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Email</th>
+                <th>Total Tasks</th>
+                <th>Completed</th>
+                <th>Pending</th>
+                <th>In-Progress</th>
+                <th>Overdue</th>
+                <th>High Priority</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                int index = 1;
+                foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@index</td>
+                        <td>@user.Email</td>
+                        <td>@user.TotalTasks</td>
+                        <td>@user.Completed</td>
+                        <td>@user.Pending</td>
+                        <td>@user.InProgress</td>
+                        <td>@user.Overdue</td>
+                        <td>@user.HighPriority</td>
+                    </tr>
+                    index++;
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="mt-4">
+    <a href="/Admin/Dashboard" class="btn btn-secondary px-4">Back</a>
+</div>
+
+<style>
+    table tbody tr:hover {
+        background: rgba(0, 123, 255, 0.1);
+    }
+
+    table {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    table thead th {
+        border: 0;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    .table-responsive {
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        color: #fff;
+    }
+</style>

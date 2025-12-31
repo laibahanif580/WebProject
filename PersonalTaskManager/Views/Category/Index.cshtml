@@ -1,0 +1,88 @@
+@{
+    ViewData["Title"] = "Categories";
+
+    var categories = new[]
+    {
+        new { Name = "Work", Icon = "bi-briefcase", Description = "Tasks related to work", ImageUrl = "/images/pexel.webp" },
+        new { Name = "Personal", Icon = "bi-person", Description = "Tasks related to personal life", ImageUrl = "/images/trip.jpeg" }
+    };
+}
+
+<section class="py-5 border-top">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-1">Categories</h2>
+        <p class="text-secondary">Organize your tasks by category</p>
+
+        <div class="row mt-4 g-4 justify-content-center">
+
+            @foreach (var cat in categories)
+            {
+                <div class="col-md-3 col-sm-6">
+
+                    <div class="card"
+                         style="
+                            height:260px;
+                            border-radius:15px;
+                            overflow:hidden;
+                            position:relative;
+                            cursor:pointer;
+                            background-image:url('@cat.ImageUrl');
+                            background-size:cover;
+                            background-position:center;
+                            transition: all .3s ease;
+                            box-shadow:0 4px 10px rgba(0,0,0,0.2);
+                         "
+                         onmouseover="this.style.transform='translateY(-8px)';"
+                         onmouseout="this.style.transform='translateY(0)';">
+
+                        <!-- Dark Overlay -->
+                        <div style="
+                            position:absolute;
+                            inset:0;
+                            background:rgba(0,0,0,0.45);
+                        "></div>
+
+                        <!-- Text Content -->
+                        <div style="
+                            position:absolute;
+                            top:50%;
+                            left:50%;
+                            transform:translate(-50%, -50%);
+                            color:white;
+                            text-align:center;
+                            width:100%;
+                            padding:10px;
+                        ">
+                            <i class="bi @cat.Icon" style="font-size:45px; margin-bottom:10px;"></i>
+
+                            <h3 style="font-size:26px; font-weight:700;">@cat.Name</h3>
+                            <p style="margin-bottom:8px;">@cat.Description</p>
+
+                            <a asp-controller="Task" asp-action="Index" asp-route-category="@cat.Name"
+                               style="
+                                    display:inline-block;
+                                    margin-top:10px;
+                                    padding:6px 18px;
+                                    background-color:white;
+                                    color:black;
+                                    font-weight:600;
+                                    border-radius:8px;
+                                    text-decoration:none;
+                                    transition:all .3s ease;
+                               "
+                               onmouseover="this.style.background='black'; this.style.color='white';"
+                               onmouseout="this.style.background='white'; this.style.color='black';">
+                                View Tasks
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</section>
+
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">

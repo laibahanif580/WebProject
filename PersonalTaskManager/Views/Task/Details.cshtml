@@ -1,0 +1,56 @@
+@model PersonalTaskManager.Models.UserTask
+@{
+    ViewData["Title"] = "Task Details";
+}
+
+<h2 class="text-center fw-bold mb-4" style="color:black;">Task Details</h2>
+
+<div class="p-4 mx-auto mt-4" style="max-width: 700px;">
+    <div class="card shadow-lg border"
+         style="background-color: rgba(255,255,255,0.3); 
+                backdrop-filter: blur(10px);
+                border-radius:25px;
+                border: 1px solid rgba(255,255,255,0.3);
+                transition: transform 0.3s ease, box-shadow 0.3s ease;"
+         onmouseover="this.style.transform='scale(1.03)'; this.style.boxShadow='0 15px 35px rgba(34,111,84,0.35)';"
+         onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.1)';">
+
+        <div class="card-body">
+            <!-- Task Title -->
+            <h3 class="card-title fw-bold mb-3" style="color:black;">@Model.Title</h3>
+
+            <!-- Description -->
+            <p class="card-text text-dark mb-3">@Model.Description</p>
+
+            <!-- Grid for details -->
+            <div class="row text-dark mb-4">
+                <div class="col-6 mb-2">
+                    <span class="fw-semibold">📁 Category:</span> @Model.Category
+                </div>
+                <div class="col-6 mb-2">
+                    <span class="fw-semibold">⚡ Priority:</span> 
+                    <span class="text-warning">@Model.Priority</span>
+                </div>
+                <div class="col-6 mb-2">
+                    <span class="fw-semibold">📅 Due:</span> @Model.DueDate?.ToString("yyyy-MM-dd")
+                </div>
+                <div class="col-6 mb-2">
+                    <span class="fw-semibold">📌 Status:</span> 
+                    <span class="@(Model.Status=="Completed" ? "text-success" : "text-warning")">
+                        @(Model.Status=="Completed" ? "✅ Completed" : "🕒 Pending")
+                    </span>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex flex-wrap gap-2 mb-3">
+                @if(Model.Status != "Completed")
+                {
+                    <a asp-action="Edit" asp-route-id="@Model.TaskId" class="btn btn-success rounded-pill px-4 py-2">Edit</a>
+                }
+                <a asp-action="Index" class="btn btn-primary rounded-pill px-4 py-2">Back</a>
+                <a asp-action="Delete" asp-route-id="@Model.TaskId" class="btn btn-danger rounded-pill px-4 py-2">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>

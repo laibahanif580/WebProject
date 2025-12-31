@@ -1,0 +1,183 @@
+@using System.Text.Json
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<style>
+    /* Background */
+    body {
+        background: linear-gradient(135deg, #1f1c2c, #928dab);
+        min-height: 100vh;
+        color: black;
+    }
+
+    /* Glass Card */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 18px;
+        padding: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        transition: 0.3s;
+    }
+
+    .glass-card:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Stat Box */
+    .stat-box {
+        padding: 25px;
+        border-radius: 18px;
+        color: black;
+        height: 100%;
+    }
+
+    .stat-1 {
+        background:linear-gradient(135deg, #f5f5f5, #e0e0e0);
+    }
+
+    .stat-2 {
+        background: linear-gradient(135deg,#fafafa, #d9d9d9);
+    }
+
+    .stat-3 {
+        background: linear-gradient(135deg,#ffffff, #ececec);
+    }
+    .stat-4 {
+        background: linear-gradient(135deg, #f0f0f0, #dcdcdc);
+    }
+
+    .section-icon {
+        font-size: 55px;
+        opacity: 0.85;
+    }
+
+    .dashboard-title {
+        font-weight: 700;
+        font-size: 32px;
+        text-shadow: 0 3px 6px rgba(0,0,0,0.3);
+    }
+
+</style>
+
+<div class="container py-5">
+
+    <h2 class="dashboard-title mb-4">Admin Dashboard</h2>
+
+    <!-- STATISTICS SECTION -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="stat-box stat-1 shadow-lg">
+                 <h5 class="fw-bold">Total Users</h5>
+                <h1 class="fw-bold mt-2">@Json.Serialize(ViewBag.TotalUsers)</h1>
+                <p class="opacity-75"><i class="bi bi-people-fill"></i>Active Members</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-box stat-2 shadow-lg">
+                <h5 class="fw-bold">Pending Approvels</h5>
+                <h1 class="fw-bold mt-2">@Json.Serialize(ViewBag.PendingApprovals)</h1>
+                <p class="opacity-75"><i class="bi bi-people-fill"></i>Account Approvals</p>
+                     </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-box stat-3 shadow-lg">
+                <h5 class="fw-bold">Pending Tasks</h5>
+                <h1 class="fw-bold mt-2">@Json.Serialize(ViewBag.PendingTasks)</h1>
+                <p class="opacity-75"><i class="bi bi-people-fill"></i>Tasks Due</p>
+            </div>
+        </div>
+         <div class="col-md-3">
+            <div class="stat-box stat-4 shadow-lg">
+                <h5 class="fw-bold">Overdue Tasks</h5>
+                <h1 class="fw-bold mt-2">@Json.Serialize(ViewBag.OverdueTasks)</h1>
+                <p class="opacity-75"><i class="bi bi-people-fill"></i>Tasks Missed</p>
+            </div>
+        </div>
+    </div>
+        
+    <!-- MANAGEMENT SECTIONS -->
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="glass-card text-center">
+                <i class="bi bi-people section-icon"></i>
+                <h4 class="mt-3">View Users</h4>
+                <p class="opacity-75">View all registered users.</p>
+                <a asp-area="Admin" asp-controller="Admin" asp-action="Users" class="btn btn-light btn-sm px-3">Go</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="glass-card text-center">
+                <i class="bi bi-kanban section-icon"></i>
+                <h4 class="mt-3">User Activity</h4>
+                <p class="opacity-75">View users tasks details.</p>
+                <a asp-area="Admin" asp-controller="Admin" asp-action="UserActivity" class="btn btn-light btn-sm px-3">View</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="glass-card text-center">
+                <i class="bi bi-graph-up-arrow section-icon"></i>
+                <h4 class="mt-3">Announcements</h4>
+                <p class="opacity-75">Send announcements to users.</p>
+                <a asp-area="Admin" asp-controller="Admin" asp-action="Announcements" class="btn btn-light btn-sm px-3">Send</a>
+            </div>
+        </div>
+
+    </div>
+</div> 
+<!-- CHART SECTION -->
+<div class="row g-4 mb-5">
+    <div class="col-12">
+        <div class="glass-card">
+            <h4 class="mb-3">User & Task Stats</h4>
+            <canvas id="statsChart" height="100"></canvas>
+        </div>
+    </div>
+</div>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const data = {
+        labels: ['Total Users', 'Pending Approvals', 'Pending Tasks', 'Overdue Tasks'],
+        datasets: [{
+            label: 'Count',
+            data: [
+                @Json.Serialize(ViewBag.TotalUsers), 
+                @Json.Serialize(ViewBag.PendingApprovals), 
+                @Json.Serialize(ViewBag.PendingTasks), 
+                @Json.Serialize(ViewBag.OverdueTasks)
+            ],
+            backgroundColor: [
+                'rgba(75, 192, 192, 0.5)',
+                'rgba(255, 206, 86, 0.5)',
+                'rgba(54, 162, 235, 0.5)',
+                'rgba(255, 99, 132, 0.5)'
+            ],
+            borderColor: [
+                'rgba(75, 192, 192, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 99, 132, 1)'
+            ],
+            borderWidth: 1
+        }]
+    };
+
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true } }
+        }
+    };
+
+    new Chart(document.getElementById('statsChart'), config);
+</script>

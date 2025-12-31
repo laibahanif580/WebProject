@@ -1,0 +1,17 @@
+@model PersonalTaskManager.Models.UserTask
+@{
+    ViewData["Title"] = "Edit Task";
+}
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data" class="px-4 py-1">
+   
+   <input type="hidden" asp-for="TaskId" />
+    @await Html.PartialAsync("_TaskFormFields", Model)
+    <div class="text-center">
+        <button type="submit" class="btn text-white px-4" style="background-color:black;">Update Task</button>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

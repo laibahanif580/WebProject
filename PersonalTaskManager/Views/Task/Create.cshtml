@@ -1,0 +1,30 @@
+@model PersonalTaskManager.Models.UserTask
+@{
+    ViewData["Title"] = "Add Task";
+}
+
+<h2 class="text-center fw-bold" style="color:black;">Add New Task</h2>
+<div class="d-flex justify-content-center align-items-center">
+    <form asp-action="Create" method="post" enctype="multipart/form-data" class="px-4 py-1"
+          style="
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 600px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 20px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            padding:20px;"
+          onmouseover="this.style.boxShadow='0 15px 35px rgba(34,111,84,0.35)'; this.style.transform='translateY(-5px)';"
+          onmouseout="this.style.boxShadow='0 5px 15px rgba(0,0,0,0.1)'; this.style.transform='translateY(0)';">
+             @await Html.PartialAsync("_TaskFormFields", Model)
+        <!-- Submit Button -->
+        <div class="text-center">
+            <button type="submit" class="btn text-white px-4" style="background-color:black;">Save Task</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

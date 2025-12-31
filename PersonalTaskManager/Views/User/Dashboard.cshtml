@@ -1,0 +1,85 @@
+@{
+    ViewData["Title"] = "UserDashboard";
+    var taskSummary = (IEnumerable<dynamic>)ViewData["TaskSummary"]; 
+}
+@* IEnumerable is used for sequence of elements that can be loopedthrough *@
+
+<style>
+ .hero {
+    padding: 100px 0;
+    border-radius: 25px;
+    background: transparent; /* make transparent to show layout background */
+    color: white; /* text color for contrast */
+    text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+}
+
+.btn-black {
+    background: #000;
+    color: #fff;
+}
+.btn-black:hover {
+    color: #000;
+    background: transparent;
+    border: 1px solid #000;
+}
+
+.feature-box {
+    border-radius: 15px;
+    padding: 20px;    /*the space inside an element b/w content and border
+                    margin is the space outside an element b/w the border and other elements*/
+    background: rgba(255, 255, 255, 0.8); /* semi-transparent to see background */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    color: black;
+    transition: all .3s ease;
+    cursor: pointer;
+}
+
+.feature-box i {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.feature-box:hover {
+    transform: translateY(-8px);  
+    @* to change the appearance or position of n element *@
+    background: #000;
+    color: #fff;
+} 
+
+
+</style>
+
+<div class="page-bg">
+    <!-- HERO -->
+    <section class="hero text-center">
+        <div class="container">
+            <h1 class="fw-bold display-5">𝑾𝒆𝒍𝒄𝒐𝒎𝒆 𝑩𝒂𝒄𝒌</h1>
+            <p class="mt-3 fs-5 text-white">Let's manage your tasks efficiently</p>
+
+            <div class="mt-4">
+                <a asp-controller="Task" asp-action="Index" class="btn btn-black px-4 py-2 me-2">Go to Tasks</a>
+                <a asp-controller="Category" asp-action="Index" class="btn btn-outline-light px-4 py-2">Categories</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- TASK CARDS -->
+    <section class="py-5">
+        <div class="container text-center">
+            <h2 class="fw-bold mb-4 text-black">Your Tasks Summary</h2>
+            <div class="row mt-4 g-4">
+                @foreach (var task in taskSummary)
+                {
+                    <div class="col-md-3 col-sm-6">
+                        <div class="feature-box">
+                            <i class="bi @task.Icon"></i>
+                            <h2>@task.Count</h2>
+                            <h3 class="mt-2">@task.Name</h3>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+</div>
+

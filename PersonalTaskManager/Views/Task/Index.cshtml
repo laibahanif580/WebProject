@@ -1,0 +1,312 @@
+
+<style>
+    .task-title {
+        font-size: 1.6rem;
+        /* Bigger title */
+        font-weight: 700;
+        /* Bold */
+        letter-spacing: 1px;
+        /* Slight spacing for classy look */
+        color: #111;
+        /* Dark color for elegance */
+        margin-bottom: 0.8rem;
+        font-family: 'Poppins', sans-serif;
+        /* Use Poppins from Google Fonts */
+        text-transform: capitalize;
+        /* Optional: capitalize words */
+    }
+
+    .task-card {
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(12px);
+        border-radius: 25px;
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s, box-shadow 0.3s;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Background image overlay */
+    .task-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('/images/cd.jpeg');
+        /* Replace with your image path */
+        background-size: cover;
+        background-position: center;
+        opacity: 1;
+        /* it will be stacked behind elements with a higher z-index */
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    /* Make content appear above the background */
+    .task-card .card-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 1.5rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .task-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 1.5rem;
+    }
+
+    .task-status {
+        font-weight: 600;
+        padding: 5px 10px;
+        border-radius: 12px;
+        font-size: 0.9rem;
+    }
+
+    .status-pending {
+        background-color: #ffecb3;
+        color: #ff9800;
+    }
+
+    .status-completed {
+        background-color: #c8e6c9;
+        color: #388e3c;
+    }
+
+    /* Full-width Details button */
+    .task-card .btn-details {
+        width: 100%;
+        background-color:#f8f4f4;
+        margin-top: 15px;
+        color: black;
+        border-radius: 20px;
+        padding: 10px 0;
+        font-weight: 600;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        text-decoration: none;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .task-card .btn-details:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(252, 249, 249, 0.15);
+        color: black;
+    }
+</style>
+
+@model IEnumerable<PersonalTaskManager.Models.UserTask>
+@{
+    ViewData["Title"] = "All Tasks";
+}
+
+<div class="container" style="min-height:100vh; padding:2rem 0; font-family:'Poppins', sans-serif;">
+    <h2 class="fw-bold text-center mb-4" style="color:black; letter-spacing:1px;">Your Tasks</h2>
+
+    <!-- Filter + Add Task -->
+    <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-4">
+        <form method="get" asp-action="Index" class="d-flex gap-2 flex-wrap" id="taskFilterForm">
+            <input type="text" name="searchTerm" value="@ViewBag.SearchTerm" placeholder="Search tasks..." class="flex-1 px-4 py-2 border rounded-md" />
+
+            <input type="hidden" name="category" value="@ViewBag.SelectedCategory" />
+            <select name="priority" class="btn-hover px-3 py-1" style="border-radius:30px; border:none;">
+                <option value="">All Priorities</option>
+                @if(ViewBag.SelectedPriority=="Low"){
+                <option value="Low" selected>Low</option>
+                }
+                else{
+                    <option value="Low" >Low</option>
+                }
+                 @if(ViewBag.SelectedPriority=="Medium"){
+                <option value="Medium" selected>Medium</option>
+                }
+                else{
+                    <option value="Medium" >Medium</option>
+                }
+                 @if(ViewBag.SelectedPriority=="High"){
+                <option value="High" selected>High</option>
+                }
+                else{
+                    <option value="High" >High</option>
+                }
+            </select>
+
+            <button type="submit" class="btn-hover px-4 py-1"
+                    style="background-color:black; color:white; border-radius:30px; font-weight:bold;">Filter</button>
+        </form>
+
+        <a href="/Task/Create" class="btn-hover px-4 py-2"
+           style="background-color:black; color:white; border-radius:30px; font-weight:bold; text-decoration:none;">Add New Task</a>
+    </div>
+
+    <!-- Tasks container -->
+    <div id="tasksContainer">
+        @await Html.PartialAsync("_TaskListPartial", Model)
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+    let typingTimer;
+    $('input[name="searchTerm"]').on('keyup', function () {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(function () {
+            var searchTerm = $('input[name="searchTerm"]').val();
+            var category = $('input[name="category"]').val();
+            var priority = $('select[name="priority"]').val(); // read current priority
+            $.ajax({
+                url: '@Url.Action("Index", "Task")',
+                type: 'GET',
+                data: { searchTerm: searchTerm, category: category, priority: priority },
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                success: function (result) {
+                    $("#tasksContainer").html(result);
+                    // Set values after HTML is updated
+                    setTimeout(function(){
+                        $('select[name="priority"]').val(priority);
+                    }, 0);
+                }
+            });
+        }, 300);
+    });
+
+    // Also update the filter button click event
+    $('button[type="submit"]').on('click', function(e){
+        e.preventDefault();
+        var searchTerm = $('input[name="searchTerm"]').val();
+        var category = $('input[name="category"]').val();
+        var priority = $('select[name="priority"]').val(); // read current priority
+        $.ajax({
+            url: '@Url.Action("Index", "Task")',
+            type: 'GET',
+            data: { searchTerm: searchTerm, category: category, priority: priority },
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            success: function (result) {
+                $("#tasksContainer").html(result);
+                // Set values after HTML is updated
+                setTimeout(function(){
+                    $('input[name="searchTerm"]').val('');
+                    $('select[name="priority"]').val(priority);
+                }, 0);
+            }
+        });
+    });
+});
+        @* $(document).ready(function () {
+            let typingTimer;
+
+            $('input[name="searchTerm"]').on('keyup', function () {
+                clearTimeout(typingTimer);
+
+                typingTimer = setTimeout(function () {
+                    var searchTerm = $('input[name="searchTerm"]').val();
+                    var category = $('input[name="category"]').val();
+                    var priority = $('select[name="priority"]').val(); // read current priority
+
+                    $.ajax({
+                        url: '@Url.Action("Index", "Task")',
+                        type: 'GET',
+                        data: { searchTerm: searchTerm, category: category, priority: priority },
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                        success: function (result) {
+                            $("#tasksContainer").html(result);
+
+                            // Keep input/select values intact
+                            $('input[name="searchTerm"]').val(searchTerm);
+                            $('select[name="priority"]').val(priority);
+                        }
+                    });
+                }, 300);
+            });
+        });
+     *@
+    </script>
+}
+
+
+
+@*
+<div class="container" style="min-height:100vh; padding:2rem 0; font-family:'Poppins', sans-serif;">
+
+    <h2 class="fw-bold text-center mb-4" style="color:black; letter-spacing:1px;">Your Tasks</h2>
+   
+   
+
+
+    <!-- Filter + Add Task -->
+    <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-4">
+        
+        <form method="get" asp-action="Index" class="d-flex gap-2 flex-wrap">
+                <input type="text" name="searchTerm" value="@ViewBag.SearchTerm" placeholder="Search tasks..." class="flex-1 px-4 py-2 border rounded-md"/>
+
+            <input type="hidden" name="category" value="@Context.Request.Query["category"]" />
+            <select name="priority" class="btn-hover px-3 py-1"
+                style="border-radius:30px; border:none; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
+                <option value="">All Priorities</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+            <button type="submit" class="btn-hover px-4 py-1"
+                style="background-color:black; color:white; border-radius:30px; font-weight:bold; box-shadow:0 4px 12px rgba(0,0,0,0.1); border:none;">
+                Filter
+            </button>
+        </form>
+
+        <a href="/Task/Create" class="btn-hover px-4 py-2"
+            style="background-color:black; color:white; border-radius:30px; font-weight:bold; text-decoration:none; box-shadow:0 6px 15px rgba(0,0,0,0.1);">
+            Add New Task
+        </a>
+    </div>
+
+    <!-- Task Cards -->
+    
+    <div class="row g-4">
+        @if (!Model.Any())
+        {
+            <p class="text-center mt-5 fw-bold" style="color:black;">
+                No tasks found.
+            </p>
+        }
+
+        @foreach (var task in Model)
+        {
+            <div class="col-md-4">
+                <div class="card task-card">
+                    <div class="card-body">
+                        <div>
+                            <h5 class="card-title fw-bold task-title text-white">@task.Title</h5>
+                            <p class="card-text text-white mb-2"><strong>Category:</strong> @task.Category</p>
+                            <span class="task-status @(task.Status == "Pending" ? "status-pending" : "status-completed")">
+                                @task.Status
+                            </span>
+                        </div>
+
+                        <a asp-controller="Task" asp-action="Details" asp-route-id="@task.TaskId"
+                            class="btn-details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div> *@

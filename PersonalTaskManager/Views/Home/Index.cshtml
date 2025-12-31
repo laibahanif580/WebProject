@@ -1,0 +1,96 @@
+﻿@{
+    ViewData["Title"] = "Welcome";
+}
+
+<style>
+    body {
+        min-height: 100vh;
+    }
+
+    .hero {
+        padding: 120px 20px;
+        text-align: center;
+        border-left: 1px solid #fff;
+        border-right: 1px solid #fff;
+        border-radius:15px;
+        color: #fff;
+        min-height: 50vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .hero h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .hero p {
+        font-size: 1.2rem;
+        color: rgba(97, 97, 97, 0.8);
+        margin-bottom: 40px;
+    }
+
+    /* Black filled button */
+    .btn-black {
+        background: rgba(0,0,0,0.85);
+        color: #fff;
+        font-weight: 600;
+        padding: 12px 30px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        margin: 0 10px;
+        text-decoration: none;
+        border: none;
+    }
+
+    .btn-black:hover {
+        background: transparent;
+        color: #000;
+        border: 2px solid #000;
+    }
+
+    /* Outline button */
+    .btn-outline-black {
+        background: transparent;
+        color: #0c0c0cff;
+        border: 2px solid #fff;
+        font-weight: 600;
+        padding: 12px 30px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        margin: 0 10px;
+        text-decoration: none;
+    }
+
+    .btn-outline-black:hover {
+        background: rgba(0,0,0,0.85);
+        color: #fff;
+        border-color: #fff;
+    }
+</style>
+
+<section class="hero">
+    <h1>Welcome to Task Manager</h1>
+
+<div class="container text-center py-2">
+    <p class="text-grey fs-5 mx-auto" style="max-width: 800px; line-height: 1.5;">
+        Our website is designed to help you manage your tasks efficiently and
+        effortlessly. Whether you are handling work projects or personal goals,
+        our platform provides helps easily create, track, and categorize your 
+        tasks and boost your productivity.
+    </p>
+</div>
+
+    <div>
+        <a class="btn-black" asp-area="Identity" asp-page="/Account/Login">
+            Login
+        </a>
+        <a class="btn-outline-black" asp-area="Identity" asp-page="/Account/Register">
+            Register
+        </a>
+    </div>
+</section>

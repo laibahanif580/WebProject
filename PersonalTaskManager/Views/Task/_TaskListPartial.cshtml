@@ -1,0 +1,28 @@
+@model IEnumerable<PersonalTaskManager.Models.UserTask>
+
+<div class="row g-4">
+    @if (!Model.Any())
+    {
+        <p class="text-center mt-5 fw-bold" style="color:black;">No tasks found.</p>
+    }
+
+    @foreach (var task in Model)
+    {
+        <div class="col-md-4">
+            <div class="card task-card">
+                <div class="card-body">
+                    <div>
+                        <h5 class="card-title fw-bold task-title text-white">@task.Title</h5>
+                        <p class="card-text text-white mb-2"><strong>Category:</strong> @task.Category</p>
+                        <span class="task-status @(task.Status == "Pending" ? "status-pending" : "status-completed")">
+                            @task.Status
+                        </span>
+                    </div>
+
+                    <a asp-controller="Task" asp-action="Details" asp-route-id="@task.TaskId"
+                       class="btn-details">Details</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
